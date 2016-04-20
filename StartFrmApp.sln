@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{4FB4DDD6-FD1F-4EFF-966C-82BC06570A9A}"
+	ProjectSection(SolutionItems) = preProject
+		Libs\ItDreamWorks.Modem.dll = Libs\ItDreamWorks.Modem.dll
+		Libs\Splash.Phone.dll = Libs\Splash.Phone.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModemCtlApp", "StartFrmApp\ModemCtlApp.csproj", "{A55773BD-98E5-4BC0-94C0-D870BFD52503}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A55773BD-98E5-4BC0-94C0-D870BFD52503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55773BD-98E5-4BC0-94C0-D870BFD52503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55773BD-98E5-4BC0-94C0-D870BFD52503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55773BD-98E5-4BC0-94C0-D870BFD52503}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
