@@ -48,6 +48,8 @@
             this.tBtnSetting = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tBtnDebug = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.SynDataBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.ComTab = new System.Windows.Forms.TabPage();
             this.ComListView = new System.Windows.Forms.ListView();
@@ -55,6 +57,7 @@
             this.ConnectState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.WorkState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.IMSI = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CCID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PhoneNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.ComCountLable = new System.Windows.Forms.ToolStripStatusLabel();
@@ -87,7 +90,9 @@
             this.toolStripSeparator2,
             this.tBtnSetting,
             this.toolStripSeparator3,
-            this.tBtnDebug});
+            this.tBtnDebug,
+            this.toolStripSeparator7,
+            this.SynDataBtn});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(989, 40);
@@ -233,6 +238,21 @@
             this.tBtnDebug.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.tBtnDebug.Click += new System.EventHandler(this.tBtnDebug_Click);
             // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 40);
+            // 
+            // SynDataBtn
+            // 
+            this.SynDataBtn.Image = ((System.Drawing.Image)(resources.GetObject("SynDataBtn.Image")));
+            this.SynDataBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SynDataBtn.Name = "SynDataBtn";
+            this.SynDataBtn.Size = new System.Drawing.Size(60, 37);
+            this.SynDataBtn.Text = "同步数据";
+            this.SynDataBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.SynDataBtn.Click += new System.EventHandler(this.SynDataBtn_Click);
+            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -266,6 +286,7 @@
             this.ConnectState,
             this.WorkState,
             this.IMSI,
+            this.CCID,
             this.PhoneNumber});
             this.ComListView.FullRowSelect = true;
             this.ComListView.GridLines = true;
@@ -291,10 +312,17 @@
             // 
             // IMSI
             // 
+            this.IMSI.DisplayIndex = 4;
             this.IMSI.Text = "IMSI";
+            // 
+            // CCID
+            // 
+            this.CCID.DisplayIndex = 5;
+            this.CCID.Text = "CCID";
             // 
             // PhoneNumber
             // 
+            this.PhoneNumber.DisplayIndex = 3;
             this.PhoneNumber.Text = "本机号码";
             // 
             // statusBar
@@ -373,7 +401,9 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainFrm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainFrm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainFrm_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -423,5 +453,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem GoTopMenuItem;
         private System.Windows.Forms.ToolStripButton tBtnRecvSMSing;
+        private System.Windows.Forms.ColumnHeader CCID;
+        private System.Windows.Forms.ToolStripButton SynDataBtn;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
     }
 }

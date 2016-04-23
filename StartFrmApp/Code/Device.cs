@@ -82,7 +82,7 @@ namespace ModemCtlApp.Code
         //}
         public int Index { get; set; }
         public string IMSI { get; set; }
-
+        public string CCID { get; set; }
         public string PhoneNumber { get; set; }
 
         public bool ConnectionState { get { return port.IsOpen; } }

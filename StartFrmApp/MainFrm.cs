@@ -19,14 +19,14 @@ namespace ModemCtlApp
         {
             public enum ColumnIndex
             {
-                端口号 = 0, 连接状态 = 1, 工作状态 = 2, IMSI = 3, 本机号码 = 4
+                端口号 = 0, 连接状态 = 1, 工作状态 = 2, 本机号码 = 3, IMSI = 4, CCID = 5
             }
         }
         public MainFrm()
         {
             InitializeComponent();
         }
-      
+
         /// <summary>
         /// 发送测号短信的手机号码
         /// </summary>
@@ -263,7 +263,22 @@ namespace ModemCtlApp
 
             data.AddKeyValue(HttpRequestHelper.RequestData.RequestDataKey.IMSI, imsi);
             data.AddKeyValue(HttpRequestHelper.RequestData.RequestDataKey.PhoneNumber, phoneNumber);
-            
+
+            HttpRequestHelper.GetHelper().AddRequestDataForThread(data);
+        }
+
+        private void PostIMSIPhoneNumberToRemote(Device device)
+        {
+            HttpRequestHelper.RequestData data = new HttpRequestHelper.RequestData();
+
+            data.Method = HttpRequestHelper.RequestMethod.POST;
+            data.URL = Report_IMSI_PhoneNumber_Handler_Url;
+            data.ContentType = "application/x-www-form-urlencoded";
+
+            data.AddKeyValue(HttpRequestHelper.RequestData.RequestDataKey.IMSI, device.IMSI);
+            data.AddKeyValue(HttpRequestHelper.RequestData.RequestDataKey.CCID, device.CCID);
+            data.AddKeyValue(HttpRequestHelper.RequestData.RequestDataKey.PhoneNumber, device.PhoneNumber);
+
             HttpRequestHelper.GetHelper().AddRequestDataForThread(data);
         }
 
@@ -336,11 +351,11 @@ namespace ModemCtlApp
                         AllDevices[x].Open();
                         if (AllDevices[x].ConnectionState)
                         {
-                            ChangeComListView(x, 1, "已连接");
+                            ChangeComListView(x, (int)ListViewSetting.ColumnIndex.连接状态, "已连接");
                         }
                         else
                         {
-                            ChangeComListView(x, 1, "未连接");
+                            ChangeComListView(x, (int)ListViewSetting.ColumnIndex.连接状态, "未连接");
                             lock (disableDevicesObj)
                             {
                                 DisableDevices.Add(AllDevices[x]);
@@ -353,12 +368,21 @@ namespace ModemCtlApp
                         if (match.Success)
                         {
                             AllDevices[x].IMSI = match.Value;
-                            AllDevices[x].SMSReceived += MainFrm_SMSReceived;
-                            lock (readyDevicesObj)
+                            //AllDevices[x].SMSReceived += MainFrm_SMSReceived;
+
+                            str = AllDevices[x].ExecuteCommand("AT+CCID");
+                            reg = new Regex(@"\d{20}", RegexOptions.Multiline);
+                            match = reg.Match(str);
+                            if (match.Success)
                             {
-                                ReadyDevices.Add(AllDevices[x]);
-                                ChangeComListView(x, 3, AllDevices[x].IMSI);
-                                ChangeCountStatusLab(string.Format("设备总数：{0}，可用设备数：{1}", AllDevices.Count, ReadyDevices.Count));
+                                AllDevices[x].CCID = match.Value;
+                                lock (readyDevicesObj)
+                                {
+                                    ReadyDevices.Add(AllDevices[x]);
+                                    ChangeComListView(x, (int)ListViewSetting.ColumnIndex.IMSI, AllDevices[x].IMSI);
+                                    ChangeComListView(x, (int)ListViewSetting.ColumnIndex.CCID, AllDevices[x].CCID);
+                                    ChangeCountStatusLab(string.Format("设备总数：{0}，可用设备数：{1}", AllDevices.Count, ReadyDevices.Count));
+                                }
                             }
                         }
                         else
@@ -366,7 +390,8 @@ namespace ModemCtlApp
                             lock (disableDevicesObj)
                             {
                                 DisableDevices.Add(AllDevices[x]);
-                                ChangeComListView(x, 3, "无");
+                                ChangeComListView(x, (int)ListViewSetting.ColumnIndex.IMSI, "无");
+                                ChangeComListView(x, (int)ListViewSetting.ColumnIndex.CCID, "无");
                             }
                         }
 
@@ -389,7 +414,7 @@ namespace ModemCtlApp
                             DisableDevices[i].Open();
                             if (DisableDevices[i].ConnectionState)
                             {
-                                ChangeComListView(i, 1, "已连接");
+                                ChangeComListView(i, (int)ListViewSetting.ColumnIndex.连接状态, "已连接");
                             }
                             else
                             {
@@ -402,12 +427,21 @@ namespace ModemCtlApp
                         if (match.Success)
                         {
                             DisableDevices[i].IMSI = match.Value;
-                            DisableDevices[i].SMSReceived += MainFrm_SMSReceived;
-                            ReadyDevices.Add(DisableDevices[i]);
-                            ChangeComListView(DisableDevices[i].PortName, (int)ListViewSetting.ColumnIndex.IMSI, match.Value);
-                            DisableDevices.RemoveAt(i);//从不可用设备集合中移除可用设备
-                            i--;
-                            ChangeCountStatusLab(string.Format("设备总数：{0}，可用设备数：{1}", AllDevices.Count, ReadyDevices.Count));
+                            //DisableDevices[i].SMSReceived += MainFrm_SMSReceived;
+
+                            str = AllDevices[i].ExecuteCommand("AT+CCID");
+                            reg = new Regex(@"\d{20}", RegexOptions.Multiline);
+                            match = reg.Match(str);
+                            if (match.Success)
+                            {
+                                DisableDevices[i].CCID = match.Value;
+                                ReadyDevices.Add(DisableDevices[i]);
+                                ChangeComListView(DisableDevices[i].PortName, (int)ListViewSetting.ColumnIndex.IMSI, DisableDevices[i].IMSI);
+                                ChangeComListView(DisableDevices[i].PortName, (int)ListViewSetting.ColumnIndex.CCID, DisableDevices[i].CCID);
+                                ChangeCountStatusLab(string.Format("设备总数：{0}，可用设备数：{1}", AllDevices.Count, ReadyDevices.Count));
+                                DisableDevices.RemoveAt(i);//从不可用设备集合中移除可用设备
+                                i--;
+                            }
                         }
                     }
                 }));
@@ -428,10 +462,11 @@ namespace ModemCtlApp
                 AllDevices[i].Close();
                 //if (!AllDevices[i].ConnectionState)
                 {
-                    ChangeComListView(i, 1, "已断开");
-                    ChangeComListView(i, 2, "空闲");
-                    ChangeComListView(i, 3, "无");
-                    ChangeComListView(i, 4, "");
+                    ChangeComListView(i, (int)ListViewSetting.ColumnIndex.连接状态, "已断开");
+                    ChangeComListView(i, (int)ListViewSetting.ColumnIndex.工作状态, "空闲");
+                    ChangeComListView(i, (int)ListViewSetting.ColumnIndex.IMSI, "无");
+                    ChangeComListView(i, (int)ListViewSetting.ColumnIndex.CCID, "无");
+                    ChangeComListView(i, (int)ListViewSetting.ColumnIndex.本机号码, "");
                 }
             }
             ReadyDevices.Clear();
@@ -557,7 +592,7 @@ namespace ModemCtlApp
                             lock (readyDevicesObj)
                             {
                                 ReadyDevices.Add(AllDevices[x]);
-                                ChangeComListView(x, 3, AllDevices[x].IMSI);
+                                ChangeComListView(x, (int)ListViewSetting.ColumnIndex.IMSI, AllDevices[x].IMSI);
                             }
                         }
                         else
@@ -565,7 +600,7 @@ namespace ModemCtlApp
                             lock (disableDevicesObj)
                             {
                                 DisableDevices.Add(AllDevices[x]);
-                                ChangeComListView(x, 3, "无");
+                                ChangeComListView(x, (int)ListViewSetting.ColumnIndex.IMSI, "无");
                             }
                         }
 
@@ -920,7 +955,6 @@ namespace ModemCtlApp
 
         private void tBtnSMSGetPhoneNumber_Click(object sender, EventArgs e)
         {
-
             if (!tBtnSMSGetPhoneNumber.Checked)
             {
                 DlgFrm frm = new DlgFrm();
@@ -1034,9 +1068,11 @@ namespace ModemCtlApp
                             if (msg.Phone.Contains(SendMsgPhoneNumber))
                             {
                                 //设置ListView上的手机号码信息
+                                d.PhoneNumber = msg.Msg;
                                 SetPhoneNumber(d.PortName, msg.Msg);
                                 //上报短信取号信息
-                                PostIMSIPhoneNumberToRemote(d.IMSI, msg.Msg);
+                                //PostIMSIPhoneNumberToRemote(d.IMSI, msg.Msg);
+                                PostIMSIPhoneNumberToRemote(d);
                                 break;
                             }
                         }
@@ -1050,7 +1086,6 @@ namespace ModemCtlApp
 
             }
             #endregion
-
         }
         /// <summary>
         /// 显示取到的手机号码
@@ -1115,7 +1150,7 @@ namespace ModemCtlApp
             {
                 PostSMSToRemote(msg.Phone, d.PhoneNumber, msg.Msg);
                 str = string.Format("{0}收到短信，来自：{1}，时间：{2:yyyy-MM-dd HH:mm:ss}\r\n内容：{3}\r\n",
-                d.PhoneNumber,msg.Phone, DateTime.Now, msg.Msg);
+                d.PhoneNumber, msg.Phone, DateTime.Now, msg.Msg);
             }
             catch (Exception ex)
             {
@@ -1141,10 +1176,10 @@ namespace ModemCtlApp
             LogBox.ScrollToCaret();
         }
 
-        
+
         private void tBtnRecvSMSing_Click(object sender, EventArgs e)
         {
-            if(!workFlag)
+            if (!workFlag)
             {
                 workFlag = true;
                 tBtnSMSGetPhoneNumber.Checked = false;
@@ -1168,7 +1203,22 @@ namespace ModemCtlApp
 
                 WorkModelLabel.Text = "模式：已连接";
             }
-            
+
+        }
+
+        private void SynDataBtn_Click(object sender, EventArgs e)
+        {
+            SynFrm frm = new SynFrm();
+            foreach(var d in ReadyDevices)
+            {
+                if( !string.IsNullOrEmpty(d.PhoneNumber) &&
+                    !string.IsNullOrEmpty(d.IMSI) &&
+                    !string.IsNullOrEmpty(d.CCID))
+                {
+                    frm.AddDevice(d);
+                }
+            }
+            frm.ShowDialog();
         }
     }
 }

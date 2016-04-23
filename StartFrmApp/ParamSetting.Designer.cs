@@ -36,7 +36,9 @@
             this.txt_call_number = new System.Windows.Forms.TextBox();
             this.lb_call_number = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtMT = new System.Windows.Forms.ComboBox();
             this.txtMEM3 = new System.Windows.Forms.ComboBox();
+            this.txtMode = new System.Windows.Forms.ComboBox();
             this.txtMEM2 = new System.Windows.Forms.ComboBox();
             this.txtMEM1 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -52,8 +54,6 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.cMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MenuItemDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtMode = new System.Windows.Forms.ComboBox();
-            this.txtMT = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -141,6 +141,21 @@
             this.tabPage2.Text = "短信设置";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // txtMT
+            // 
+            this.txtMT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtMT.DropDownWidth = 85;
+            this.txtMT.FormattingEnabled = true;
+            this.txtMT.Items.AddRange(new object[] {
+            "接受的短消息存储到默认的内存位置包括class3不通知TE",
+            "接收的短消息储存到默认的内存位置, 并且向TE发出通知包括class3",
+            "对于class2短消息储存到SIM卡并且向TE发出通知对于其他class直接将短消息转发到TE",
+            "对于class3短消息直接转发到TE同mt2对于其他class同mt1"});
+            this.txtMT.Location = new System.Drawing.Point(177, 102);
+            this.txtMT.Name = "txtMT";
+            this.txtMT.Size = new System.Drawing.Size(81, 20);
+            this.txtMT.TabIndex = 0;
+            // 
             // txtMEM3
             // 
             this.txtMEM3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -153,6 +168,20 @@
             this.txtMEM3.Name = "txtMEM3";
             this.txtMEM3.Size = new System.Drawing.Size(52, 20);
             this.txtMEM3.TabIndex = 3;
+            // 
+            // txtMode
+            // 
+            this.txtMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtMode.FormattingEnabled = true;
+            this.txtMode.Items.AddRange(new object[] {
+            "先将通知缓存起来再按照mt的值进行发送",
+            "在数据线空闲的情况下通知TE否则不通知TE",
+            "数据线空闲时直接通知TE否则先将通知缓存起来待数据线空闲时再行发送",
+            "直接通知TE在数据线被占用的情况下通知TE的消息将混合在数据中一起传输"});
+            this.txtMode.Location = new System.Drawing.Point(75, 102);
+            this.txtMode.Name = "txtMode";
+            this.txtMode.Size = new System.Drawing.Size(85, 20);
+            this.txtMode.TabIndex = 0;
             // 
             // txtMEM2
             // 
@@ -291,35 +320,6 @@
             this.MenuItemDelete.Text = "删除";
             this.MenuItemDelete.Click += new System.EventHandler(this.MenuItemDelete_Click);
             // 
-            // txtMode
-            // 
-            this.txtMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtMode.FormattingEnabled = true;
-            this.txtMode.Items.AddRange(new object[] {
-            "先将通知缓存起来再按照mt的值进行发送",
-            "在数据线空闲的情况下通知TE否则不通知TE",
-            "数据线空闲时直接通知TE否则先将通知缓存起来待数据线空闲时再行发送",
-            "直接通知TE在数据线被占用的情况下通知TE的消息将混合在数据中一起传输"});
-            this.txtMode.Location = new System.Drawing.Point(75, 102);
-            this.txtMode.Name = "txtMode";
-            this.txtMode.Size = new System.Drawing.Size(85, 20);
-            this.txtMode.TabIndex = 0;
-            // 
-            // txtMT
-            // 
-            this.txtMT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtMT.DropDownWidth = 85;
-            this.txtMT.FormattingEnabled = true;
-            this.txtMT.Items.AddRange(new object[] {
-            "接受的短消息存储到默认的内存位置包括class3不通知TE",
-            "接收的短消息储存到默认的内存位置, 并且向TE发出通知包括class3",
-            "对于class2短消息储存到SIM卡并且向TE发出通知对于其他class直接将短消息转发到TE",
-            "对于class3短消息直接转发到TE同mt2对于其他class同mt1"});
-            this.txtMT.Location = new System.Drawing.Point(177, 102);
-            this.txtMT.Name = "txtMT";
-            this.txtMT.Size = new System.Drawing.Size(81, 20);
-            this.txtMT.TabIndex = 0;
-            // 
             // ParamSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -332,6 +332,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ParamSetting";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "参数设置";
             this.Load += new System.EventHandler(this.ParamSetting_Load);
             this.tabControl1.ResumeLayout(false);

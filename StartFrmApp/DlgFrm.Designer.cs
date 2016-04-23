@@ -60,6 +60,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DlgFrm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "发送测号短信的手机号码";
             this.ResumeLayout(false);
             this.PerformLayout();

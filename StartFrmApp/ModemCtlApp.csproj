@@ -80,6 +80,12 @@
     <Compile Include="DebugForm.Designer.cs">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DelSmsFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DelSmsFrm.Designer.cs">
+      <DependentUpon>DelSmsFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DlgFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,12 @@
     <Compile Include="PDUEncoding.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SynFrm.Designer.cs">
+      <DependentUpon>SynFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TaskFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +124,9 @@
     </Compile>
     <EmbeddedResource Include="DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DelSmsFrm.resx">
+      <DependentUpon>DelSmsFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DlgFrm.resx">
       <DependentUpon>DlgFrm.cs</DependentUpon>
@@ -132,6 +147,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SynFrm.resx">
+      <DependentUpon>SynFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TaskFrm.resx">
       <DependentUpon>TaskFrm.cs</DependentUpon>
     </EmbeddedResource>

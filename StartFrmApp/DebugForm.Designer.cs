@@ -99,7 +99,8 @@
             this.Controls.Add(this.SendMsg);
             this.Controls.Add(this.btn);
             this.Name = "DebugForm";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Debug";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
